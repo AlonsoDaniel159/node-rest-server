@@ -4,7 +4,7 @@ export const dbConnection = async() => {
 
     try {
         
-        mongoose.set('strictQuery', false);
+        mongoose.set('strictQuery', true);
 
         await mongoose.connect(process.env.MONGODB_CNN, {
             useNewUrlParser: true,
