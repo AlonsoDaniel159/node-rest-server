@@ -4,6 +4,8 @@ export const dbConnection = async() => {
 
     try {
         
+        mongoose.set('strictQuery', false);
+
         await mongoose.connect(process.env.MONGODB_CNN, {
             useNewUrlParser: true,
             useUnifiedTopology: true
