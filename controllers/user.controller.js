@@ -43,9 +43,7 @@ export const usuariosPost = async (req, res = response) => {
     //Guardar en la DB
     await usuario.save();
 
-    res.json({
-        usuario
-    })
+    res.json(usuario);
 }
 
 //PUT
@@ -63,24 +61,16 @@ export const usuariosPut = async (req, res = response) => {
 
     const usuario = await modelUser.findByIdAndUpdate(id, resto);
 
-    res.json({
-        usuario
-    });
+    res.json(usuario);
 }
 
 //DELETE
 export const usuariosDelete = async(req, res = response) => {
 
     const id = req.params.id
-
-    // Fisicamente lo borramos
-    // const usuario = await modelUser.findByIdAndDelete(id);
-
     const usuario = await modelUser.findByIdAndUpdate(id, { status: false }, { new: true })
 
-    res.json({
-        usuario
-    })
+    res.json(usuario)
 }
 
 //PATCH
