@@ -6,7 +6,7 @@ import bcryptjs from 'bcryptjs';
 export const usuariosGet = async (req = request, res = response) => {
 
     // const { q, nombre, apikey, page = 10, limit } = req.query;
-    const { limite = 5, desde = 0 } = req.query;
+    const { limite = 5, desde = 1 } = req.query;
     const query = { status: true };
 
     // const usuarios = await modelUser.find(query)
@@ -59,7 +59,7 @@ export const usuariosPut = async (req, res = response) => {
         resto.password = bcryptjs.hashSync(password, salt);
     }
 
-    const usuario = await modelUser.findByIdAndUpdate(id, resto);
+    const usuario = await modelUser.findByIdAndUpdate(id, resto, {new: true});
 
     res.json(usuario);
 }
