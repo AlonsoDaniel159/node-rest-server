@@ -20,7 +20,7 @@ export const usuariosGet = async (req = request, res = response) => {
     const [ total, usuarios ] = await Promise.all([
         modelUser.countDocuments(query),
         modelUser.find(query)
-            .skip(Number(desde))
+            .skip(Number(desde)-1)
             .limit(Number(limite))
     ])
 
@@ -43,9 +43,7 @@ export const usuariosPost = async (req, res = response) => {
     //Guardar en la DB
     await usuario.save();
 
-    res.json({
-        usuario
-    })
+    res.json(usuario);
 }
 
 //PUT
@@ -63,24 +61,16 @@ export const usuariosPut = async (req, res = response) => {
 
     const usuario = await modelUser.findByIdAndUpdate(id, resto);
 
-    res.json({
-        usuario
-    });
+    res.json(usuario);
 }
 
 //DELETE
 export const usuariosDelete = async(req, res = response) => {
 
     const id = req.params.id
-
-    // Fisicamente lo borramos
-    // const usuario = await modelUser.findByIdAndDelete(id);
-
     const usuario = await modelUser.findByIdAndUpdate(id, { status: false }, { new: true })
 
-    res.json({
-        usuario
-    })
+    res.json(usuario)
 }
 
 //PATCH
