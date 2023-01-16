@@ -1,5 +1,5 @@
 import { request, response } from "express"
-import { modelUser } from "../models/usuario.js";
+import { modelUser as Usuario } from "../models/usuario.js";
 import bcryptjs from 'bcryptjs';
 
 //GET
@@ -7,19 +7,16 @@ export const usuariosGet = async (req = request, res = response) => {
 
     // const { q, nombre, apikey, page = 10, limit } = req.query;
     const { limite = 5, desde = 1 } = req.query;
+
+    //Condición de que liste loss usuarios con estado true
     const query = { status: true };
 
-    // const usuarios = await modelUser.find(query)
-    //     .skip(Number(desde))
-    //     .limit(Number(limite));;
-
-    // const total = await modelUser.countDocuments(query);
-
+ 
 
     //Desestructuración de arreglos
     const [ total, usuarios ] = await Promise.all([
-        modelUser.countDocuments(query),
-        modelUser.find(query)
+        Usuario.countDocuments(query),
+        Usuario.find(query)
             .skip(Number(desde)-1)
             .limit(Number(limite))
     ])
@@ -34,7 +31,7 @@ export const usuariosGet = async (req = request, res = response) => {
 export const usuariosPost = async (req, res = response) => {
 
     const { name, email, password, role } = req.body;
-    const usuario = modelUser({ name, email, password, role });
+    const usuario = Usuario({ name, email, password, role });
 
     //Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
@@ -59,7 +56,7 @@ export const usuariosPut = async (req, res = response) => {
         resto.password = bcryptjs.hashSync(password, salt);
     }
 
-    const usuario = await modelUser.findByIdAndUpdate(id, resto, {new: true});
+    const usuario = await Usuario.findByIdAndUpdate(id, resto, {new: true});
 
     res.json(usuario);
 }
@@ -68,7 +65,7 @@ export const usuariosPut = async (req, res = response) => {
 export const usuariosDelete = async(req, res = response) => {
 
     const id = req.params.id
-    const usuario = await modelUser.findByIdAndUpdate(id, { status: false }, { new: true })
+    const usuario = await Usuario.findByIdAndUpdate(id, { status: false }, { new: true })
 
     res.json(usuario)
 }
